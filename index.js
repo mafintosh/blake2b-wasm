@@ -97,24 +97,24 @@ Blake2b.WASM = wasm && wasm.buffer
 Blake2b.SUPPORTED = typeof WebAssembly !== 'undefined'
 
 Blake2b.ready = function (cb) {
-  if (!cb) cb = noop
-  if (!wasm) return cb(new Error('WebAssembly not supported'))
-
   // backwards compat, can be removed in a new major
-  var p = new Promise(function (reject, resolve) {
-    wasm.onload(function (err) {
-      if (err) resolve()
-      else reject()
-      cb(err)
+  var p
+  if (wasm) {
+    p = new Promise(function (resolve, reject) {
+      wasm.onload(function (err) {
+        if (err) reject(err)
+        else resolve()
+      })
     })
-  })
+  } else {
+    p = Promise.reject('WebAssembly not supported')
+  }
 
+  if (cb) p.then(cb, cb)
   return p
 }
 
 Blake2b.prototype.ready = Blake2b.ready
-
-function noop () {}
 
 function hexSlice (buf, start, len) {
   var str = ''
