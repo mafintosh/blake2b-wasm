@@ -59,7 +59,7 @@ function Blake2b (digestLength, key, salt, personal, noAssert) {
 
 Blake2b.prototype.update = function (input) {
   assert(this.finalized === false, 'Hash instance finalized')
-  assert(input, 'input must be TypedArray or Buffer')
+  assert(input instanceof Uint8Array, 'input must be TypedArray or Buffer')
 
   if (head + input.length > wasm.memory.length) wasm.realloc(head + input.length)
   wasm.memory.set(input, head)
