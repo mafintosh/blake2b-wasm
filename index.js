@@ -112,7 +112,7 @@ Blake2b.ready = function (cb) {
   // backwards compat, can be removed in a new major
   var p = new Promise(function (reject, resolve) {
     wasm.onload(function (err) {
-      if (err) resolve()
+      if (!err) resolve()
       else reject()
       cb(err)
     })
