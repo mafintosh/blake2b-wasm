@@ -44,6 +44,14 @@ Update the hash with a new piece of data. `data` should be a buffer or uint8arra
 
 Digest the hash.
 
+#### `hash.getPartialHash()`
+
+Returns the current partial hash.
+
+#### `hash.setPartialHash(data)`
+
+Set the hash to a previously set hash. `data` should be the result of `getPartialHash()` (which returns uint8array)
+
 #### `var promise = blake2b.ready([cb])`
 
 Wait for the WASM code to load. Returns the WebAssembly instance promise as well for convenience.

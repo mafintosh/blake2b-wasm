@@ -55,6 +55,22 @@ blake2b.ready(function () {
     t.end()
   })
 
+  tape('allows getting & setting a partial hash', function (t) {
+    var a = blake2b(64)
+    var b = blake2b(64)
+
+    var partialHash = a
+      .update(Buffer.from('hello'))
+      .update(Buffer.from(' '))
+      .update(Buffer.from('world'))
+      .getPartialHash()
+
+    b.setPartialHash(partialHash)
+
+    t.same(a.digest(), b.digest())
+    t.end()
+  })
+
   vectors.forEach(function (vector, i) {
     tape('test-vectors.json #' + i, function (t) {
       var key = vector.key && Buffer.from(vector.key, 'hex')

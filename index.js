@@ -124,7 +124,7 @@ Blake2b.ready = function (cb) {
 Blake2b.prototype.ready = Blake2b.ready
 
 Blake2b.prototype.getPartialHash = function () {
-  return wasm.memory.slice(this.pointer, this.pointer+216);
+  return wasm.memory.slice(this.pointer, this.pointer + 216);
 }
 
 Blake2b.prototype.setPartialHash = function (ph) {
