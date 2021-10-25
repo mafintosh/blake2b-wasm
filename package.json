@@ -10,10 +10,10 @@
     "blake2b": "^1.2.0",
     "browserify": "^14.4.0",
     "tape": "^4.6.3",
-    "wasm-tools": "^0.1.1"
+    "wasm-tools": "^0.2.0"
   },
   "scripts": {
-    "compile": "wasm-to-js -sf cjs blake2b.wat > blake2b.js",
+    "compile": "wasm-to-js -f cjs blake2b.wat > blake2b.js",
     "demo": "browserify example.js > bundle.js",
     "test": "tape test.js"
   },

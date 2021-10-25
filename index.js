@@ -1,5 +1,8 @@
 var assert = require('nanoassert')
-var wasm = typeof WebAssembly !== "undefined" && require('./blake2b')()
+var wasm = null
+var wasmPromise = typeof WebAssembly !== "undefined" && require('./blake2b')().then(mod => {
+  wasm = mod
+})
 
 var head = 64
 var freeList = []
@@ -107,14 +110,13 @@ Blake2b.prototype.digest = function (enc) {
 // libsodium compat
 Blake2b.prototype.final = Blake2b.prototype.digest
 
-Blake2b.WASM = wasm && wasm.buffer
+Blake2b.WASM = wasm
 Blake2b.SUPPORTED = typeof WebAssembly !== 'undefined'
 
 Blake2b.ready = function (cb) {
   if (!cb) cb = noop
-  if (!wasm) return cb(new Error('WebAssembly not supported'))
-  cb()
-  return Promise.resolve()
+  if (!wasmPromise) return cb(new Error('WebAssembly not supported'))
+  return wasmPromise.then(() => cb())
 }
 
 Blake2b.prototype.ready = Blake2b.ready

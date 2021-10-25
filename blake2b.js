@@ -27,8 +27,8 @@ var require_blake2b = __commonJS({
 
 // wasm-module:./blake2b.wat
 var bytes = require_blake2b();
-var compiled = new WebAssembly.Module(bytes);
-module.exports = (imports) => {
-  const instance = new WebAssembly.Instance(compiled, imports);
+var compiled = WebAssembly.compile(bytes);
+module.exports = async (imports) => {
+  const instance = await WebAssembly.instantiate(await compiled, imports);
   return instance.exports;
 };
