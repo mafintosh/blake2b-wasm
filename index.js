@@ -1,4 +1,6 @@
 var assert = require('nanoassert')
+var b4a = require('b4a')
+
 var wasm = null
 var wasmPromise = typeof WebAssembly !== "undefined" && require('./blake2b')().then(mod => {
   wasm = mod
@@ -95,8 +97,8 @@ Blake2b.prototype.digest = function (enc) {
     return this._memory.slice(this.pointer + 128, this.pointer + 128 + this.digestLength)
   }
 
-  if (enc === 'hex') {
-    return hexSlice(this._memory, this.pointer + 128, this.digestLength)
+  if (typeof enc === 'string') {
+    return b4a.toString(this._memory, enc, this.pointer + 128, this.pointer + 128 + this.digestLength)
   }
 
   assert(enc instanceof Uint8Array && enc.length >= this.digestLength, 'input must be Uint8Array or Buffer')
@@ -130,14 +132,3 @@ Blake2b.prototype.setPartialHash = function (ph) {
 }
 
 function noop () {}
-
-function hexSlice (buf, start, len) {
-  var str = ''
-  for (var i = 0; i < len; i++) str += toHex(buf[start + i])
-  return str
-}
-
-function toHex (n) {
-  if (n < 16) return '0' + n.toString(16)
-  return n.toString(16)
-}
