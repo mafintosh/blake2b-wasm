@@ -40,6 +40,8 @@ Create a new hash instance. `digestLength` defaults to `32`.
 
 Update the hash with a new piece of data. `data` should be a buffer or uint8array.
 
+The size of the data is limited to `65536000 - 64 - 216*n` bytes, where `n` is the number of Blake2b instances.
+
 #### `var digest = hash.digest([enc])`
 
 Digest the hash.
