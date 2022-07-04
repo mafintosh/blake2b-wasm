@@ -79,6 +79,7 @@ Blake2b.prototype._realloc = function (size) {
 Blake2b.prototype.update = function (input) {
   assert(this.finalized === false, 'Hash instance finalized')
   assert(input instanceof Uint8Array, 'input must be Uint8Array or Buffer')
+  assert(input.length + head <= 65536000, 'input + head must be of size 65,536,000 or less')
 
   if (head + input.length > this._memory.length) this._realloc(head + input.length)
   this._memory.set(input, head)
