@@ -118,7 +118,10 @@ Blake2b.SUPPORTED = typeof WebAssembly !== 'undefined'
 Blake2b.ready = function (cb) {
   if (!cb) cb = noop
   if (!wasmPromise) return cb(new Error('WebAssembly not supported'))
-  return wasmPromise.then(() => cb(), cb)
+  return wasmPromise.then(mod => {
+    Blake2b.WASM = mod
+    cb()
+  }, cb)
 }
 
 Blake2b.prototype.ready = Blake2b.ready
